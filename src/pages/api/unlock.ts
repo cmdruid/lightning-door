@@ -1,18 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-// import { Gpio } from 'onoff'
+import { Gpio } from 'onoff'
 
 import { withSession }    from '@/lib/session'
 import { check_schedule } from '@/lib/schedule'
-import { sleep } from '@/lib/utils'
+import { sleep }          from '@/lib/utils'
 
-// const relay = new Gpio(17, 'out')
+const relay = new Gpio(17, 'out')
 
-// async function toggle_relay() {
-//   await relay.write(1)
-//   await sleep(5000)
-//   relay.write(0)
-// }
+async function toggle_relay() {
+  await relay.write(1)
+  await sleep(5000)
+  relay.write(0)
+}
 
 export default withSession(handler)
 
@@ -38,7 +38,7 @@ async function handler (
 
   if (check_schedule(paid_at)) {
     console.log('door unlocked!')
-    // toggle_relay()
+    toggle_relay()
     return res.status(200).json({ ok : true, message: 'Door unlocked!' })
   } else {
     console.log('pass expired!')

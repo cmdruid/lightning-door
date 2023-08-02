@@ -1,10 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { Buff }           from '@cmdcode/buff-utils'
-import { config, schedule }         from '@/schema/config'
-import { create_invoice } from '@/lib/lnd'
-import { check_schedule, get_schedule } from '@/lib/schedule'
-import { now } from '@/lib/utils'
+import { Buff }             from '@cmdcode/buff-utils'
+import { config, schedule } from '@/schema/config'
+import { create_invoice }   from '@/lib/lnd'
+import { now }              from '@/lib/utils'
+
+import {
+  check_schedule,
+  get_schedule
+} from '@/lib/schedule'
 
 const { HOST_URL } = config
 
@@ -22,6 +26,8 @@ async function handler(
   }
   
   const schedule_data = get_schedule()
+
+  console.log(schedule_data)
 
   if (
     schedule_data === null ||

@@ -9,6 +9,15 @@ const get_hrs = (ts : number = now()) => new Date(ts * 1000).getHours()
 const get_min = (ts : number = now()) => new Date(ts * 1000).getMinutes()
 const get_sec = (ts : number = now()) => new Date(ts * 1000).getSeconds()
 
+export const Time = {
+  now,
+  dow : get_dow,
+  dom : get_dom,
+  hrs : get_hrs,
+  min : get_min,
+  sec : get_sec
+}
+
 export function get_schedule() {
   return schedule[get_dow()]
 }
@@ -32,6 +41,7 @@ export function check_schedule(ts : number) {
   const [ open, close ] = hours
   // Get the current hour.
   const curr_hr = get_hrs()
+  console.log('curr hr:', curr_hr)
   // If current hour does not fall within open hours:
   if (curr_hr < open || curr_hr >= close) {
     // Return false.

@@ -7,6 +7,7 @@ import { useToast }  from '@/hooks/useToast'
 import { Invoice }   from '@/lib/lnd'
 
 export default function Pass () {
+  const [ disabled, setDisabled ] = useState(false)
   const [ data, setData ]   = useState<Invoice>()
   const [ Toast, setToast ] = useToast()
 
@@ -25,9 +26,11 @@ export default function Pass () {
   }, [ invoice_id, setToast ])
 
   async function unlock () {
+    setDisabled(true)
     const res = await fetch('../api/unlock')
     const { message } = await res.json()
     setToast(message)
+    setTimeout(() => setDisabled(false), 5000)
   }
 
   useEffect(() => {
@@ -51,7 +54,12 @@ export default function Pass () {
           <div className="content">
             <h1>Pass Status:</h1>
             <pre>{JSON.stringify(data, null, 2)}</pre>
-            <button onClick={unlock}>Unlock Door</button>
+            <button 
+              onClick={unlock}
+              disabled={disabled}
+            >
+              Unlock Door
+            </button>
           </div>
         </div>
       </main>
