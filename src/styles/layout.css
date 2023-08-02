@@ -1,0 +1,55 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+i {
+  font-size: medium;
+}
+
+pre {
+  color: black;
+  background-color: rgb(183, 235, 255);
+  text-align: left;
+  border-radius: 3px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  background-color: rgb(50, 100, 150);
+  border: 1px solid black;
+  margin : 1rem 0;
+  padding: 3rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  margin: 0 auto;
+  max-width: 250px;
+}
+
+.status {
+  margin-top: 2rem;
+}
+
+.toast {
+  min-height: 6rem;
+  margin: 1rem;
+}
+
+.toast p {
+  padding : 1rem;
+  margin: 0 auto;
+  max-width: 250px;
+  background-color: rgba(255, 0, 0, 0.354);
+}
