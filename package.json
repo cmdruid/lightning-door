@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitescrow/escrow-core.git"
+    "url": "https://github.com/cmdruid/lightning-door.git"
   },
   "private": true,
   "scripts": {
