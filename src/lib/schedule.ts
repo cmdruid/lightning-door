@@ -9,6 +9,9 @@ const get_hrs = (ts : number = now()) => new Date(ts * 1000).getHours()
 const get_min = (ts : number = now()) => new Date(ts * 1000).getMinutes()
 const get_sec = (ts : number = now()) => new Date(ts * 1000).getSeconds()
 
+const DAY_IN_SECONDS = 60*60*24;
+const MONTH_IN_SECONDS = 60*60*24*31;
+
 export const Time = {
   now,
   dow : get_dow,
@@ -23,13 +26,22 @@ export function get_schedule() {
 }
 
 export function check_schedule(ts : number) {
-  // Get current day of week.
-  const curr_dow = get_dow()
-  // If provided timestamp is not current:
-  if (get_dow(ts) !== curr_dow) {
-    // Return false.
+
+  // Check if more than 1 day has passed
+  if(now() - ts > DAY_IN_SECONDS){
     return false
   }
+
+  // Get current day of week.
+  const curr_dow = get_dow()
+
+  //TODO - Remove - Do not need the following anymore:
+  // // If provided timestamp is not current:
+  // if (get_dow(ts) !== curr_dow) {
+  //   // Return false.
+  //   return false
+  // }
+
   // Get hours for current day.
   const hours = schedule[curr_dow as keyof Schedule]
   // If no schedule is set:
@@ -49,4 +61,8 @@ export function check_schedule(ts : number) {
   }
   // Return true.
   return true
+}
+
+export function check_nomad(ts: number){
+  return now() - ts < MONTH_IN_SECONDS;
 }

@@ -14,3 +14,5 @@ export const schedule : Schedule = {
   sat : [ 7, 19, 2100  ],
   sun : null
 }
+
+export const MONTHLY_RATE = 1;

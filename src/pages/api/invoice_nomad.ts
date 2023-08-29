@@ -1,18 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { Buff }             from '@cmdcode/buff-utils'
-import { config, schedule } from '@/schema/config'
+import { MONTHLY_RATE, config, schedule } from '@/schema/config'
 import { create_invoice }   from '@/lib/lnd'
-import { now }              from '@/lib/utils'
-
-import {
-  check_schedule,
-  get_schedule
-} from '@/lib/schedule'
 
 const { HOST_URL } = config
 
-// lnurl1dp68gurn8ghj7er0daezuurvv43xcctz9ejx2a30v9cxjtmfdemx76trv5wd6rtw
+// lnurl1dp68gurn8ghj7er0daezuurvv43xcctz9ejx2a30v9cxjtmfdemx76trv40kummdv9jqqcq8xs
 
 export default handler
 
@@ -27,29 +21,13 @@ async function handler(
     return res.status(400).end()
   }
   
-  const schedule_data = get_schedule()
-
-  console.log(schedule_data)
-
-  if (
-    schedule_data === null ||
-    !check_schedule(now())
-  ) {
-    return res.status(403).json({
-      status : 'ERROR',
-      reason : 'We are currently closed to new day-pass entries. Please check the door schedule for more information.'
-    })
-  }
-
-  const [ _open, _close, rate ] = schedule_data
-
-
-  const meta  = Buff.json([['text/plain', 'lightning door']])
+  const rate = MONTHLY_RATE;
+  const meta  = Buff.json([['text/plain', 'lightning door - nomad']])
   const msats = rate * 1000
 
   if (typeof amount !== 'string') {
     return res.status(200).json({
-      callback    : HOST_URL + '/api/invoice',
+      callback    : HOST_URL + '/api/invoice_nomad',
       maxSendable : msats,
       minSendable : msats,
       metadata    : meta.str,
@@ -76,7 +54,7 @@ async function handler(
     routes : [],
     successAction: {
       tag         : 'url',
-      description : 'Click the link to view your pass and unlock the door:',
+      description : 'Click the link to view your pass and unlock the door for the month:',
       url         : HOST_URL + `/pass/${invoice_id}`
     }
   })

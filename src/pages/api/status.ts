@@ -35,14 +35,17 @@ async function handler (
       })
     }
 
-    const { state, settle_date, value } = invoice.data
+
+    const { state, settle_date, value, memo } = invoice.data
 
     if (state === 'SETTLED') {
       req.session.is_paid = true 
       req.session.paid_at = Number(settle_date)
+      req.session.memo = memo
     } else {
       req.session.is_paid = false
       req.session.paid_at = undefined
+      req.session.memo = undefined
     }
 
     await req.session.save()
@@ -52,7 +55,8 @@ async function handler (
       data : {
         value,
         is_paid : req.session.is_paid,
-        paid_at : req.session.paid_at
+        paid_at : req.session.paid_at,
+        memo: req.session.memo
       }
     })
   } catch (err) {
