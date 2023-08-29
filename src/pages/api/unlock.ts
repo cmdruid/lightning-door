@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { withSession }    from '@/lib/session'
-import { check_schedule } from '@/lib/schedule'
+import { check_nomad, check_schedule } from '@/lib/schedule'
 
 // import { toggle_relay }   from '@/lib/relay'
 
@@ -12,7 +12,7 @@ async function handler (
   res: NextApiResponse
 ) {
   const { method, session }  = req
-  const { is_paid, paid_at } = session
+  const { is_paid, paid_at, memo } = session
 
   if (method !== 'GET') {
     console.log('Bad request!')
@@ -25,6 +25,18 @@ async function handler (
   ) {
     console.log('Unauthorized!')
     return res.status(401).json({ ok : false, message : 'Pass is not authorized!' })
+  }
+
+  // Check Nomad Pass
+  if((memo as string).includes('nomad')){
+    if(check_nomad(paid_at)){
+      console.log('door unlocked!')
+      // toggle_relay()
+      return res.status(200).json({ ok : true, message: 'Door unlocked!' })
+    } else {
+      console.log('pass expired!')
+      return res.status(403).json({ ok : false, message : 'Pass has expired!' })
+    }
   }
 
   if (check_schedule(paid_at)) {
