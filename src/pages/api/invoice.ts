@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { Buff }             from '@cmdcode/buff-utils'
-import { config, schedule } from '@/schema/config'
 import { create_invoice }   from '@/lib/lnd'
 import { now }              from '@/lib/utils'
 
@@ -10,7 +9,7 @@ import {
   get_schedule
 } from '@/lib/schedule'
 
-const { HOST_URL } = config
+const { HOST_URL } = process.env
 
 // lnurl1dp68gurn8ghj7er0daezuurvv43xcctz9ejx2a30v9cxjtmfdemx76trv5wd6rtw
 
@@ -44,7 +43,8 @@ async function handler(
   const [ _open, _close, rate ] = schedule_data
 
 
-  const meta  = Buff.json([['text/plain', 'lightning door']])
+  const memo  = 'lightning door - day pass'
+  const meta  = Buff.json([['text/plain', memo]])
   const msats = rate * 1000
 
   if (typeof amount !== 'string') {
@@ -58,7 +58,7 @@ async function handler(
   }
   
   const hash    = meta.digest.hex
-  const invoice = await create_invoice({ amount: msats, hash })
+  const invoice = await create_invoice({ amount: msats, hash, memo })
 
   if (!invoice.ok) {
     console.log(invoice.error)

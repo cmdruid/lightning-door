@@ -28,11 +28,11 @@ async function handler (
   }
 
   // Check Nomad Pass
-  if((memo as string).includes('nomad')){
+  if ((memo as string).includes('nomad')){
     if(check_nomad(paid_at)){
-      console.log('door unlocked!')
+      console.log('door unlocked for nomad pass!')
       // toggle_relay()
-      return res.status(200).json({ ok : true, message: 'Door unlocked!' })
+      return res.status(200).json({ ok : true, message: 'Door unlocked for nomad pass!' })
     } else {
       console.log('pass expired!')
       return res.status(403).json({ ok : false, message : 'Pass has expired!' })
@@ -40,9 +40,9 @@ async function handler (
   }
 
   if (check_schedule(paid_at)) {
-    console.log('door unlocked!')
+    console.log('door unlocked for day pass!')
     // toggle_relay()
-    return res.status(200).json({ ok : true, message: 'Door unlocked!' })
+    return res.status(200).json({ ok : true, message: 'Door unlocked for day pass!' })
   } else {
     console.log('pass expired!')
     return res.status(403).json({ ok : false, message : 'Pass has expired!' })

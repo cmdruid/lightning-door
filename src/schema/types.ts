@@ -7,6 +7,7 @@ declare module 'iron-session' {
 export interface SessionData {
   is_paid ?: boolean
   paid_at ?: number
+  memo    ?: string
 }
 
 export type ScheduleData = [

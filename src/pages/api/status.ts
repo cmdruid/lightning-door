@@ -38,14 +38,16 @@ async function handler (
 
     const { state, settle_date, value, memo } = invoice.data
 
+    console.log('memo:', invoice.data)
+
     if (state === 'SETTLED') {
       req.session.is_paid = true 
       req.session.paid_at = Number(settle_date)
-      req.session.memo = memo
+      req.session.memo    = memo
     } else {
       req.session.is_paid = false
       req.session.paid_at = undefined
-      req.session.memo = undefined
+      req.session.memo    = undefined
     }
 
     await req.session.save()
@@ -56,7 +58,7 @@ async function handler (
         value,
         is_paid : req.session.is_paid,
         paid_at : req.session.paid_at,
-        memo: req.session.memo
+        memo    : req.session.memo
       }
     })
   } catch (err) {

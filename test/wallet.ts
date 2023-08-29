@@ -1,6 +1,4 @@
-export {}
-
-fetch('http://localhost:3000/api/invoice').then(async res1 => {
+fetch('http://localhost:3000/api/invoice_nomad').then(async res1 => {
   if (!res1.ok) {
     const { status, statusText } = res1
     const json = await res1.json()
@@ -9,7 +7,7 @@ fetch('http://localhost:3000/api/invoice').then(async res1 => {
   } else {
     const { maxSendable } = await res1.json()
     console.log('Amount:', maxSendable)
-    fetch(`http://localhost:3000/api/invoice?amount=${maxSendable}`).then(async res2 => {
+    fetch(`http://localhost:3000/api/invoice_nomad?amount=${maxSendable}`).then(async res2 => {
       if (!res2.ok) {
         const { status, statusText } = res2
         const json = await res2.json()

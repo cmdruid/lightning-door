@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { Buff }             from '@cmdcode/buff-utils'
-import { MONTHLY_RATE, config, schedule } from '@/schema/config'
-import { create_invoice }   from '@/lib/lnd'
+import { Buff }           from '@cmdcode/buff-utils'
+import { MONTHLY_RATE }   from '@/schema/config'
+import { create_invoice } from '@/lib/lnd'
 
-const { HOST_URL } = config
+const { HOST_URL } = process.env
 
 // lnurl1dp68gurn8ghj7er0daezuurvv43xcctz9ejx2a30v9cxjtmfdemx76trv40kummdv9jqqcq8xs
 
@@ -21,8 +21,9 @@ async function handler(
     return res.status(400).end()
   }
   
-  const rate = MONTHLY_RATE;
-  const meta  = Buff.json([['text/plain', 'lightning door - nomad']])
+  const rate  = MONTHLY_RATE;
+  const memo  = 'lightning door - nomad'
+  const meta  = Buff.json([['text/plain', memo]])
   const msats = rate * 1000
 
   if (typeof amount !== 'string') {
@@ -36,7 +37,7 @@ async function handler(
   }
   
   const hash    = meta.digest.hex
-  const invoice = await create_invoice({ amount: msats, hash })
+  const invoice = await create_invoice({ amount: msats, hash, memo })
 
   if (!invoice.ok) {
     console.log(invoice.error)
